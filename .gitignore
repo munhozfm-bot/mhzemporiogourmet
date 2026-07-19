@@ -1,0 +1,7 @@
+__pycache__/
+*.py[cod]
+.env
+.venv/
+venv/
+mhz_erp.db
+.DS_Store

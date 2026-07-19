@@ -1,0 +1,10 @@
+
+{% extends "base.html" %}{% block title %}Produtos · MHZ ERP{% endblock %}{% block content %}
+<div class="page-head"><div><h1>Produtos</h1><p class="muted">Cadastro, custos, preços e estoque</p></div><a class="btn primary" href="{{ url_for('product_new') }}">Novo produto</a></div>
+<form class="search" method="get"><input name="q" value="{{ q }}" placeholder="Buscar por código, marca ou produto"><button class="btn" type="submit">Buscar</button></form>
+<div class="card"><div class="table-wrap"><table><thead><tr><th>Código</th><th>Produto</th><th>Categoria</th><th>Custo</th><th>Venda</th><th>Margem</th><th>Estoque</th><th></th></tr></thead><tbody>
+{% for p in products %}{% set total_cost=p.cost+p.packaging+p.other_costs %}{% set margin=((p.sale_price-total_cost)/p.sale_price*100) if p.sale_price else 0 %}
+<tr><td>{{ p.code }}</td><td><strong>{{ p.brand }}</strong><br><span class="muted">{{ p.name }}</span></td><td>{{ p.category }}</td>
+<td>R$ {{ "%.2f"|format(total_cost) }}</td><td>R$ {{ "%.2f"|format(p.sale_price) }}</td><td><span class="badge {% if margin<20 %}warn{% endif %}">{{ "%.1f"|format(margin) }}%</span></td>
+<td><span class="{% if p.current_stock<=p.min_stock %}low{% endif %}">{{ p.current_stock }}</span></td><td><a href="{{ url_for('product_edit',product_id=p.id) }}">Editar</a></td></tr>{% endfor %}
+</tbody></table></div></div>{% endblock %}

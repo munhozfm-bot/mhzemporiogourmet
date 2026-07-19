@@ -1,0 +1,17 @@
+
+{% extends "base.html" %}{% block title %}Dashboard · MHZ ERP{% endblock %}{% block content %}
+<div class="page-head"><div><h1>Dashboard executivo</h1><p class="muted">Visão consolidada da operação</p></div></div>
+<div class="grid kpis">
+<div class="card"><span>Faturamento</span><strong>R$ {{ "%.2f"|format(sales.revenue) }}</strong></div>
+<div class="card"><span>Lucro bruto</span><strong>R$ {{ "%.2f"|format(sales.profit) }}</strong></div>
+<div class="card"><span>Pedidos</span><strong>{{ sales.orders }}</strong></div>
+<div class="card"><span>Ticket médio</span><strong>R$ {{ "%.2f"|format(ticket) }}</strong></div>
+<div class="card"><span>Produtos ativos</span><strong>{{ summary.products or 0 }}</strong></div>
+<div class="card"><span>Unidades em estoque</span><strong>{{ summary.units or 0 }}</strong></div>
+<div class="card"><span>Capital em estoque</span><strong>R$ {{ "%.2f"|format(summary.stock_cost or 0) }}</strong></div>
+<div class="card alert"><span>Estoque baixo</span><strong>{{ summary.low_stock or 0 }}</strong></div></div>
+<div class="card section"><div class="section-title"><h2>Produtos com maior margem</h2><a class="btn" href="{{ url_for('products') }}">Ver produtos</a></div>
+<div class="table-wrap"><table><thead><tr><th>Código</th><th>Produto</th><th>Venda</th><th>Custo</th><th>Margem</th></tr></thead><tbody>
+{% for p in top %}<tr><td>{{ p.code }}</td><td>{{ p.brand }} · {{ p.name }}</td><td>R$ {{ "%.2f"|format(p.sale_price) }}</td>
+<td>R$ {{ "%.2f"|format(p.cost) }}</td><td><span class="badge">{{ "%.1f"|format(p.margin) }}%</span></td></tr>{% endfor %}
+</tbody></table></div></div>{% endblock %}
