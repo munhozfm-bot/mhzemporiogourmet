@@ -40,6 +40,16 @@ class AppTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("Baggio", response.get_data(as_text=True))
 
+    def test_csrf_token_is_rendered_as_hidden_input(self):
+        login_response = self.client.get("/login")
+        self.assertEqual(login_response.status_code, 200)
+        self.assertIn('<input type="hidden" name="csrf_token"', login_response.get_data(as_text=True))
+
+        self.login()
+        product_form_response = self.client.get("/products/new")
+        self.assertEqual(product_form_response.status_code, 200)
+        self.assertIn('<input type="hidden" name="csrf_token"', product_form_response.get_data(as_text=True))
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,7 +1,7 @@
 
 {% extends "base.html" %}{% block title %}Produto · MHZ ERP{% endblock %}{% block content %}
 <div class="page-head"><div><h1>{% if product %}Editar produto{% else %}Novo produto{% endif %}</h1></div></div>
-<form class="card form-grid" method="post">{{ csrf_token() }}
+<form class="card form-grid" method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 <label>Código<input name="code" required value="{{ product.code if product else '' }}"></label>
 <label>Categoria<input name="category" required value="{{ product.category if product else '' }}"></label>
 <label>Marca<input name="brand" required value="{{ product.brand if product else '' }}"></label>

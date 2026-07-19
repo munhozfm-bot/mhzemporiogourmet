@@ -1,6 +1,6 @@
 
 {% extends "base.html" %}{% block title %}Entrar · MHZ ERP{% endblock %}{% block content %}
-<div class="login-wrap"><form class="card login-card" method="post">{{ csrf_token() }}<div class="logo">MHZ</div><h1>ERP Cloud</h1>
+<div class="login-wrap"><form class="card login-card" method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><div class="logo">MHZ</div><h1>ERP Cloud</h1>
 <p class="muted">Gestão profissional da MHZ Empório Gourmet</p>
 <label>E-mail</label><input type="email" name="email" autocomplete="username" required>
 <label>Senha</label><input type="password" name="password" autocomplete="current-password" required>
