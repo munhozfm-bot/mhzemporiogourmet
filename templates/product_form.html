@@ -9,7 +9,7 @@
 <label>Peso<input name="weight" value="{{ product.weight if product else '' }}"></label>
 <label>Fornecedor<input name="supplier" value="{{ product.supplier if product else '' }}"></label>
 <label>Custo<input type="number" step="0.01" name="cost" value="{{ product.cost if product else 0 }}"></label>
-<label>Embalagem<input type="number" step="0.01" name="packaging" value="{{ product.packaging if product else 0 }}"></label>
+<label>Embalagem<input type="text" name="packaging" value="{{ product.packaging if product else '' }}" placeholder="Pacote, Pouch, Caixa, Unidade, Frasco"></label>
 <label>Outros custos<input type="number" step="0.01" name="other_costs" value="{{ product.other_costs if product else 0 }}"></label>
 <label>Preço de venda<input type="number" step="0.01" name="sale_price" value="{{ product.sale_price if product else 0 }}"></label>
 <label>Estoque atual<input type="number" name="current_stock" value="{{ product.current_stock if product else 0 }}"></label>

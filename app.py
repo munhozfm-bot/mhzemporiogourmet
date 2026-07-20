@@ -39,7 +39,7 @@ def init_db():
         weight TEXT,
         supplier TEXT,
         cost REAL NOT NULL DEFAULT 0,
-        packaging REAL NOT NULL DEFAULT 0,
+        packaging TEXT NOT NULL DEFAULT '',
         other_costs REAL NOT NULL DEFAULT 0,
         sale_price REAL NOT NULL DEFAULT 0,
         min_stock INTEGER NOT NULL DEFAULT 1,
@@ -135,7 +135,7 @@ def dashboard():
     sales = conn.execute("SELECT COALESCE(SUM(total),0) revenue, COALESCE(SUM(profit),0) profit, COUNT(*) orders FROM sales").fetchone()
     top = conn.execute("""
         SELECT code,brand,name,sale_price,cost,
-        CASE WHEN sale_price>0 THEN ((sale_price-(cost+packaging+other_costs))/sale_price)*100 ELSE 0 END margin
+        CASE WHEN sale_price>0 THEN ((sale_price-(cost+other_costs))/sale_price)*100 ELSE 0 END margin
         FROM products WHERE status='Ativo' ORDER BY margin DESC LIMIT 5
     """).fetchall()
     conn.close()
@@ -168,7 +168,7 @@ def product_new():
                 INSERT INTO products(code,category,brand,name,weight,supplier,cost,packaging,other_costs,sale_price,min_stock,current_stock,status)
                 VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
             """,(d["code"].strip().upper(),d["category"],d["brand"],d["name"],d.get("weight",""),d.get("supplier",""),
-                 float(d.get("cost") or 0),float(d.get("packaging") or 0),float(d.get("other_costs") or 0),
+                 float(d.get("cost") or 0),d.get("packaging",""),float(d.get("other_costs") or 0),
                  float(d.get("sale_price") or 0),int(d.get("min_stock") or 1),int(d.get("current_stock") or 0),d.get("status","Ativo")))
             conn.commit()
             flash("Produto cadastrado com sucesso.","success")
@@ -194,7 +194,7 @@ def product_edit(product_id):
                 UPDATE products SET code=?,category=?,brand=?,name=?,weight=?,supplier=?,cost=?,packaging=?,other_costs=?,
                 sale_price=?,min_stock=?,current_stock=?,status=? WHERE id=?
             """,(d["code"].strip().upper(),d["category"],d["brand"],d["name"],d.get("weight",""),d.get("supplier",""),
-                 float(d.get("cost") or 0),float(d.get("packaging") or 0),float(d.get("other_costs") or 0),
+                 float(d.get("cost") or 0),d.get("packaging",""),float(d.get("other_costs") or 0),
                  float(d.get("sale_price") or 0),int(d.get("min_stock") or 1),int(d.get("current_stock") or 0),
                  d.get("status","Ativo"),product_id))
             conn.commit()
